@@ -1,6 +1,18 @@
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
+interface AuthResponse {
+  token?: string;
+  user?: any;
+  message?: string;
+}
+
+interface ApiResponse<T = any> {
+  token?: string;
+  data?: T;
+  message?: string;
+}
+
 class ApiClient {
   private baseURL: string;
   private token: string | null;
@@ -31,15 +43,15 @@ class ApiClient {
   }
 
   // Auth methods
-  async register(userData: any) {
-    return this.request('/auth/register', {
+  async register(userData: any): Promise<AuthResponse> {
+    return this.request<AuthResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
     });
   }
 
-  async login(credentials: any) {
-    const response = await this.request('/auth/login', {
+  async login(credentials: any): Promise<AuthResponse> {
+    const response = await this.request<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
@@ -52,7 +64,7 @@ class ApiClient {
     return response;
   }
 
-  async logout() {
+  async logout(): Promise<void> {
     this.token = null;
     localStorage.removeItem('token');
   }
