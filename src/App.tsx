@@ -8,6 +8,11 @@ import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import ListItem from "./pages/ListItem";
+import RequestItem from "./pages/RequestItem";
+import Messages from "./pages/Messages";
+import Profile from "./pages/Profile";
+import ItemDetail from "./pages/ItemDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,7 +28,11 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/list-item" element={<ListItem />} />
+          <Route path="/request-item" element={<RequestItem />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
