@@ -26,7 +26,7 @@ A modern web application built with React, TypeScript, and Vite, featuring a bea
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd local-resource-connect
+cd <folder_name>
 ```
 
 2. Install dependencies:
