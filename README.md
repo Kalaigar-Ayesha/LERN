@@ -1,73 +1,84 @@
-# Welcome to your Lovable project
+# Local Resource Connect
 
-## Project info
+A modern web application built with React, TypeScript, and Vite, featuring a beautiful UI powered by Shadcn UI components and TailwindCSS.
 
-**URL**: https://lovable.dev/projects/29184b25-7d10-45b5-953d-2e561f8cd18f
+## 🚀 Features
 
-## How can I edit this code?
+- Modern React (v18) with TypeScript support
+- Fast development and build times with Vite
+- Beautiful and accessible UI components from Shadcn UI
+- Responsive design with TailwindCSS
+- Form handling with React Hook Form and Zod validation
+- State management with React Query
+- Routing with React Router DOM
+- Modern date handling with date-fns
+- Beautiful charts with Recharts
+- Toast notifications with Sonner
+- Dark mode support with next-themes
 
-There are several ways of editing your application.
+## 📦 Prerequisites
 
-**Use Lovable**
+- Node.js (v16 or higher)
+- npm or bun package manager
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/29184b25-7d10-45b5-953d-2e561f8cd18f) and start prompting.
+## 🛠️ Installation
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd local-resource-connect
 ```
 
-**Edit a file directly in GitHub**
+2. Install dependencies:
+```bash
+npm install
+# or
+bun install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🏃‍♂️ Development
 
-**Use GitHub Codespaces**
+To start the development server:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm run dev
+# or
+bun dev
+```
 
-## What technologies are used for this project?
+The application will be available at `http://localhost:5173`
 
-This project is built with:
+## 🏗️ Build
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+To create a production build:
 
-## How can I deploy this project?
+```bash
+npm run build
+# or
+bun run build
+```
 
-Simply open [Lovable](https://lovable.dev/projects/29184b25-7d10-45b5-953d-2e561f8cd18f) and click on Share -> Publish.
+For development build:
 
-## Can I connect a custom domain to my Lovable project?
+```bash
+npm run build:dev
+# or
+bun run build:dev
+```
 
-Yes, you can!
+## 🛠️ Tech Stack
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- [React]
+- [TypeScript]
+- [Vite]
+- [Shadcn UI]
+- [TailwindCSS]
+- [React Query]
+- [React Router]
+- [React Hook Form]
+- [Zod]
+- [Recharts]
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📄 License
+
+This project is licensed under the MIT License.
