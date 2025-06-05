@@ -1,313 +1,316 @@
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { 
+  Search, 
   Plus, 
+  Filter, 
   MapPin, 
-  Clock, 
   Star, 
-  MessageCircle, 
-  Heart,
-  Package,
-  Search,
-  Filter,
+  Clock,
+  Grid3X3,
+  List,
+  SlidersHorizontal,
+  User,
+  MessageSquare,
   Bell,
-  User
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
+  LogOut
+} from "lucide-react";
+import { apiClient } from "@/utils/api";
+import { Item } from "@/types";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("available");
+  const [items, setItems] = useState<Item[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [loading, setLoading] = useState(true);
 
-  // Mock data
-  const userStats = {
-    trustScore: 4.8,
-    totalExchanges: 23,
-    itemsShared: 15,
-    itemsBorrowed: 8
+  useEffect(() => {
+    fetchItems();
+  }, [category, sortBy]);
+
+  const fetchItems = async () => {
+    try {
+      setLoading(true);
+      const params: any = {};
+      if (category !== "all") params.category = category;
+      if (sortBy === "distance") params.sortBy = "distance";
+      if (sortBy === "newest") params.sortBy = "createdAt";
+      
+      const response = await apiClient.getItems(params);
+      setItems(response.data || []);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const availableItems = [
-    {
-      id: 1,
-      title: "Power Drill Set",
-      category: "Tools",
-      owner: "Mike Johnson",
-      distance: "0.3 km",
-      condition: "Excellent",
-      trustScore: 4.9,
-      available: "Today - Sunday"
-    },
-    {
-      id: 2,
-      title: "Gardening Books Collection",
-      category: "Books",
-      owner: "Sarah Chen",
-      distance: "0.7 km",
-      condition: "Good",
-      trustScore: 4.7,
-      available: "This week"
-    },
-    {
-      id: 3,
-      title: "Baby Carrier",
-      category: "Baby & Kids",
-      owner: "Emma Wilson",
-      distance: "1.2 km",
-      condition: "Like New",
-      trustScore: 5.0,
-      available: "Flexible"
-    }
-  ];
+  const filteredItems = items.filter(item =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const myRequests = [
-    {
-      id: 1,
-      title: "Looking for a Ladder",
-      category: "Tools",
-      urgency: "Medium",
-      posted: "2 hours ago",
-      matches: 3
-    },
-    {
-      id: 2,
-      title: "Need camping gear for weekend",
-      category: "Outdoor",
-      urgency: "High",
-      posted: "1 day ago",
-      matches: 7
-    }
-  ];
+  const handleLogout = () => {
+    apiClient.logout();
+    window.location.href = "/";
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <Package className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-xl font-bold text-gray-900">LREN</h1>
-            </Link>
+      <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center space-x-8">
+              <Link to="/" className="flex items-center space-x-2">
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-600"></div>
+                <span className="text-xl font-bold text-gray-900">LREN</span>
+              </Link>
+              
+              <nav className="hidden md:flex items-center space-x-6">
+                <Link to="/dashboard" className="text-blue-600 font-medium">Browse</Link>
+                <Link to="/list-item" className="text-gray-600 hover:text-gray-900">List Item</Link>
+                <Link to="/request-item" className="text-gray-600 hover:text-gray-900">Requests</Link>
+              </nav>
+            </div>
+
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm">
-                <Bell className="w-4 h-4" />
+              <Button variant="ghost" size="sm" className="hidden sm:flex">
+                <Bell className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm">
-                <MessageCircle className="w-4 h-4" />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <User className="w-4 h-4" />
+              <Link to="/messages">
+                <Button variant="ghost" size="sm">
+                  <MessageSquare className="h-4 w-4" />
+                </Button>
+              </Link>
+              <Link to="/profile">
+                <Button variant="ghost" size="sm">
+                  <User className="h-4 w-4" />
+                </Button>
+              </Link>
+              <Button variant="ghost" size="sm" onClick={handleLogout}>
+                <LogOut className="h-4 w-4" />
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Alex! 👋</h1>
-          <p className="text-gray-600">Your local community has 12 new items available nearby.</p>
-        </div>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar */}
+          <aside className="lg:w-64 space-y-6">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Link to="/list-item" className="w-full">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700">
+                    <Plus className="h-4 w-4 mr-2" />
+                    List an Item
+                  </Button>
+                </Link>
+                <Link to="/request-item" className="w-full">
+                  <Button variant="outline" className="w-full">
+                    <Search className="h-4 w-4 mr-2" />
+                    Request Item
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="border-0 bg-white/80 backdrop-blur-sm">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Filters</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <div>
-                  <p className="text-sm text-gray-600">Trust Score</p>
-                  <p className="text-2xl font-bold text-gray-900 flex items-center">
-                    {userStats.trustScore}
-                    <Star className="w-4 h-4 text-yellow-500 ml-1" />
-                  </p>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Category</label>
+                  <Select value={category} onValueChange={setCategory}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      <SelectItem value="tools">Tools</SelectItem>
+                      <SelectItem value="electronics">Electronics</SelectItem>
+                      <SelectItem value="books">Books</SelectItem>
+                      <SelectItem value="furniture">Furniture</SelectItem>
+                      <SelectItem value="clothing">Clothing</SelectItem>
+                      <SelectItem value="sports">Sports</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
-                  <Star className="w-6 h-6 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card className="border-0 bg-white/80 backdrop-blur-sm">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Total Exchanges</p>
-                  <p className="text-2xl font-bold text-gray-900">{userStats.totalExchanges}</p>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Sort By</label>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="newest">Newest First</SelectItem>
+                      <SelectItem value="distance">Closest First</SelectItem>
+                      <SelectItem value="rating">Highest Rated</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
-                  <Heart className="w-6 h-6 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </aside>
 
-          <Card className="border-0 bg-white/80 backdrop-blur-sm">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Items Shared</p>
-                  <p className="text-2xl font-bold text-gray-900">{userStats.itemsShared}</p>
-                </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
-                  <Package className="w-6 h-6 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 bg-white/80 backdrop-blur-sm">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Items Borrowed</p>
-                  <p className="text-2xl font-bold text-gray-900">{userStats.itemsBorrowed}</p>
-                </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Search className="w-6 h-6 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <Link to="/list-item">
-            <Card className="border-0 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white cursor-pointer transition-all duration-300 hover:shadow-lg">
+          {/* Main Content */}
+          <main className="flex-1 space-y-6">
+            {/* Search Bar */}
+            <Card>
               <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold mb-1">Share an Item</h3>
-                    <p className="text-green-100">Help your neighbors by lending something</p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Search items, descriptions..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
                   </div>
-                  <Plus className="w-8 h-8" />
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant={viewMode === "grid" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setViewMode("grid")}
+                    >
+                      <Grid3X3 className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant={viewMode === "list" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setViewMode("list")}
+                    >
+                      <List className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </Link>
 
-          <Link to="/request-item">
-            <Card className="border-0 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white cursor-pointer transition-all duration-300 hover:shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold mb-1">Request an Item</h3>
-                    <p className="text-blue-100">Find what you need in your community</p>
-                  </div>
-                  <Search className="w-8 h-8" />
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
+            {/* Results Header */}
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold text-gray-900">
+                Available Items
+                <span className="text-lg font-normal text-gray-500 ml-2">
+                  ({filteredItems.length} items)
+                </span>
+              </h1>
+            </div>
+
+            {/* Items Grid/List */}
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <Card key={i} className="animate-pulse">
+                    <div className="h-48 bg-gray-200 rounded-t-lg"></div>
+                    <CardContent className="p-4">
+                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                      <div className="h-3 bg-gray-200 rounded mb-4"></div>
+                      <div className="flex justify-between">
+                        <div className="h-3 bg-gray-200 rounded w-16"></div>
+                        <div className="h-3 bg-gray-200 rounded w-20"></div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className={`grid gap-6 ${
+                viewMode === "grid" 
+                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" 
+                  : "grid-cols-1"
+              }`}>
+                {filteredItems.map((item) => (
+                  <Link key={item._id} to={`/item/${item._id}`}>
+                    <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer h-full">
+                      <div className="relative">
+                        <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-t-lg flex items-center justify-center">
+                          <span className="text-gray-400 text-4xl">📦</span>
+                        </div>
+                        <Badge 
+                          className={`absolute top-3 right-3 ${
+                            item.availability === "available" ? "bg-green-500" : "bg-orange-500"
+                          }`}
+                        >
+                          {item.availability}
+                        </Badge>
+                      </div>
+                      
+                      <CardContent className="p-4">
+                        <div className="space-y-2">
+                          <div className="flex items-start justify-between">
+                            <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">
+                              {item.title}
+                            </h3>
+                            <Badge variant="outline" className="ml-2 text-xs">
+                              {item.category}
+                            </Badge>
+                          </div>
+                          
+                          <p className="text-gray-600 text-sm line-clamp-2">
+                            {item.description}
+                          </p>
+                          
+                          <div className="flex items-center justify-between pt-2">
+                            <div className="flex items-center text-sm text-gray-500">
+                              <MapPin className="h-3 w-3 mr-1" />
+                              <span>2.3 km away</span>
+                            </div>
+                            
+                            <div className="flex items-center text-sm text-gray-500">
+                              <Star className="h-3 w-3 mr-1 fill-yellow-400 text-yellow-400" />
+                              <span>4.8</span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center text-xs text-gray-400 pt-1">
+                            <Clock className="h-3 w-3 mr-1" />
+                            <span>Listed 2 days ago</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {filteredItems.length === 0 && !loading && (
+              <Card className="p-12 text-center">
+                <div className="text-gray-400 text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No items found</h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search terms or filters, or be the first to list an item in this category.
+                </p>
+                <Link to="/list-item">
+                  <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700">
+                    <Plus className="h-4 w-4 mr-2" />
+                    List an Item
+                  </Button>
+                </Link>
+              </Card>
+            )}
+          </main>
         </div>
-
-        {/* Main Content Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <div className="flex items-center justify-between">
-            <TabsList className="bg-white/80 backdrop-blur-sm">
-              <TabsTrigger value="available">Available Nearby</TabsTrigger>
-              <TabsTrigger value="requests">My Requests</TabsTrigger>
-              <TabsTrigger value="messages">Messages</TabsTrigger>
-            </TabsList>
-            <Button variant="outline" size="sm">
-              <Filter className="w-4 h-4 mr-2" />
-              Filter
-            </Button>
-          </div>
-
-          <TabsContent value="available" className="space-y-4">
-            <div className="grid gap-4">
-              {availableItems.map((item) => (
-                <Card key={item.id} className="border-0 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-semibold text-lg">{item.title}</h3>
-                          <Badge variant="secondary">{item.category}</Badge>
-                        </div>
-                        <div className="flex items-center text-sm text-gray-600 space-x-4">
-                          <span className="flex items-center">
-                            <User className="w-4 h-4 mr-1" />
-                            {item.owner}
-                          </span>
-                          <span className="flex items-center">
-                            <MapPin className="w-4 h-4 mr-1" />
-                            {item.distance}
-                          </span>
-                          <span className="flex items-center">
-                            <Star className="w-4 h-4 mr-1 text-yellow-500" />
-                            {item.trustScore}
-                          </span>
-                        </div>
-                      </div>
-                      <Button className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600">
-                        Contact
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Condition: <span className="font-medium">{item.condition}</span></span>
-                      <span className="flex items-center text-gray-600">
-                        <Clock className="w-4 h-4 mr-1" />
-                        {item.available}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="requests" className="space-y-4">
-            <div className="grid gap-4">
-              {myRequests.map((request) => (
-                <Card key={request.id} className="border-0 bg-white/80 backdrop-blur-sm">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-semibold text-lg">{request.title}</h3>
-                          <Badge variant={request.urgency === 'High' ? 'destructive' : 'default'}>
-                            {request.urgency} Priority
-                          </Badge>
-                        </div>
-                        <div className="flex items-center text-sm text-gray-600 space-x-4">
-                          <span>{request.category}</span>
-                          <span>{request.posted}</span>
-                          <span className="flex items-center text-green-600 font-medium">
-                            {request.matches} matches found
-                          </span>
-                        </div>
-                      </div>
-                      <Button variant="outline">View Matches</Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="messages">
-            <Card className="border-0 bg-white/80 backdrop-blur-sm">
-              <CardContent className="p-8 text-center">
-                <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="font-semibold text-lg mb-2">No messages yet</h3>
-                <p className="text-gray-600 mb-4">Start borrowing or lending to connect with your community</p>
-                <Button className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600">
-                  Browse Available Items
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
       </div>
     </div>
   );

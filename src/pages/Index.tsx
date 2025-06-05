@@ -1,250 +1,260 @@
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { MapPin, Heart, Users, Star, ArrowRight, Recycle, HandHeart, Search } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Share2, Users, Leaf, MapPin, ArrowRight, Search, Heart, Shield } from "lucide-react";
 
 const Index = () => {
+  const features = [
+    {
+      icon: Share2,
+      title: "Share Resources",
+      description: "Lend and borrow items with your neighbors safely and easily"
+    },
+    {
+      icon: Users,
+      title: "Build Community",
+      description: "Connect with people in your area and strengthen local bonds"
+    },
+    {
+      icon: Leaf,
+      title: "Reduce Waste",
+      description: "Give items a second life instead of buying new ones"
+    },
+    {
+      icon: Shield,
+      title: "Trusted Network",
+      description: "Review system ensures safe and reliable exchanges"
+    }
+  ];
+
+  const stats = [
+    { number: "10K+", label: "Active Users" },
+    { number: "50K+", label: "Items Shared" },
+    { number: "500+", label: "Communities" },
+    { number: "95%", label: "Success Rate" }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-              <Recycle className="w-5 h-5 text-white" />
+      <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-600"></div>
+              <span className="text-xl font-bold text-gray-900">LREN</span>
             </div>
-            <h1 className="text-xl font-bold text-gray-900">LREN</h1>
+            
+            <nav className="hidden md:flex items-center space-x-8">
+              <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
+              <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors">How it Works</a>
+              <a href="#community" className="text-gray-600 hover:text-gray-900 transition-colors">Community</a>
+            </nav>
+
+            <div className="flex items-center space-x-4">
+              <Link to="/login">
+                <Button variant="ghost" className="hidden sm:inline-flex">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
           </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="text-gray-600 hover:text-green-600 transition-colors">Features</a>
-            <a href="#how-it-works" className="text-gray-600 hover:text-green-600 transition-colors">How it Works</a>
-            <Link to="/login">
-              <Button variant="outline" className="mr-2">Login</Button>
-            </Link>
-            <Link to="/register">
-              <Button className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600">
-                Get Started
-              </Button>
-            </Link>
-          </nav>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center max-w-4xl">
-          <Badge className="mb-6 bg-green-100 text-green-700 hover:bg-green-200">
-            <Heart className="w-4 h-4 mr-1" />
-            Community-Powered Sharing
-          </Badge>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Share, Borrow, and
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500"> Build Community</span>
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Connect with neighbors to share resources, reduce waste, and strengthen your local community through our smart matching platform.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/register">
-              <Button size="lg" className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 px-8">
-                Start Sharing <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Button size="lg" variant="outline" className="px-8">
-              <MapPin className="mr-2 w-5 h-5" />
-              Find Your Community
-            </Button>
+      <section className="relative overflow-hidden py-20 sm:py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl text-center">
+            <Badge className="mb-6 bg-blue-100 text-blue-800 hover:bg-blue-200">
+              Join 10,000+ neighbors sharing resources
+            </Badge>
+            
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
+              Share, Borrow, and{" "}
+              <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+                Build Community
+              </span>
+            </h1>
+            
+            <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Connect with neighbors to share resources, reduce waste, and strengthen your local community 
+              through our smart matching platform.
+            </p>
+            
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/register">
+                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700">
+                  Start Sharing Today
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link to="/dashboard">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                  <Search className="mr-2 h-4 w-4" />
+                  Browse Items
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4 bg-white/50">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-white" />
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-3xl sm:text-4xl font-bold text-gray-900">{stat.number}</div>
+                <div className="text-gray-600 mt-2">{stat.label}</div>
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">5,000+</h3>
-              <p className="text-gray-600">Active Community Members</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <HandHeart className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">15,000+</h3>
-              <p className="text-gray-600">Items Shared & Borrowed</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">4.9/5</h3>
-              <p className="text-gray-600">Average Trust Rating</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4">
-        <div className="container mx-auto">
+      <section id="features" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose LREN?</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Why Choose LREN?
+            </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Our platform makes community sharing safe, easy, and rewarding for everyone.
+              Our platform makes sharing resources simple, safe, and rewarding for everyone.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <Card className="hover:shadow-lg transition-shadow duration-300 border-0 bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center mb-4">
-                  <Search className="w-6 h-6 text-white" />
-                </div>
-                <CardTitle>Smart Matching</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Our AI-powered system matches your requests with nearby available items based on location, urgency, and category.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow duration-300 border-0 bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mb-4">
-                  <MapPin className="w-6 h-6 text-white" />
-                </div>
-                <CardTitle>Hyperlocal Community</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Connect with neighbors within 5km radius. Build stronger local relationships while sharing resources.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow duration-300 border-0 bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center mb-4">
-                  <Star className="w-6 h-6 text-white" />
-                </div>
-                <CardTitle>Trust & Safety</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Comprehensive rating system and user verification ensure safe and reliable exchanges within your community.
-                </CardDescription>
-              </CardContent>
-            </Card>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader className="text-center pb-2">
+                  <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
+                    <feature.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <CardDescription className="text-gray-600">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 px-4 bg-gradient-to-br from-green-50 to-blue-50">
-        <div className="container mx-auto">
+      {/* How it Works */}
+      <section id="how-it-works" className="py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Get started in minutes and join your local sharing community.
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              How It Works
+            </h2>
+            <p className="text-xl text-gray-600">
+              Get started in three simple steps
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          
+          <div className="grid md:grid-cols-3 gap-12">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-xl font-bold">
-                1
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-100 flex items-center justify-center">
+                <span className="text-2xl font-bold text-blue-600">1</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Join Your Community</h3>
-              <p className="text-gray-600">
-                Sign up and verify your location to connect with neighbors in your area.
-              </p>
+              <h3 className="text-xl font-semibold mb-4">Sign Up & Verify</h3>
+              <p className="text-gray-600">Create your account and verify your location to connect with nearby neighbors.</p>
             </div>
+            
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-xl font-bold">
-                2
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-100 flex items-center justify-center">
+                <span className="text-2xl font-bold text-green-600">2</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Share or Request</h3>
-              <p className="text-gray-600">
-                List items you want to share or create requests for things you need.
-              </p>
+              <h3 className="text-xl font-semibold mb-4">List or Browse</h3>
+              <p className="text-gray-600">Share items you're not using or find what you need from your community.</p>
             </div>
+            
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-xl font-bold">
-                3
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-purple-100 flex items-center justify-center">
+                <span className="text-2xl font-bold text-purple-600">3</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Connect & Exchange</h3>
-              <p className="text-gray-600">
-                Get matched with nearby community members and arrange safe exchanges.
-              </p>
+              <h3 className="text-xl font-semibold mb-4">Connect & Share</h3>
+              <p className="text-gray-600">Message users, arrange pickup, and build lasting community connections.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-green-500 to-blue-500">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Build Your Community?
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-green-600">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            Ready to Start Sharing?
           </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of neighbors who are already sharing, caring, and building stronger communities together.
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of neighbors who are already building stronger communities through sharing.
           </p>
           <Link to="/register">
-            <Button size="lg" className="bg-white text-green-600 hover:bg-gray-50 px-8">
-              Get Started Today <ArrowRight className="ml-2 w-5 h-5" />
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+              Join LREN Today
+              <Heart className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <Recycle className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-xl font-bold">LREN</h3>
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-600"></div>
+                <span className="text-xl font-bold">LREN</span>
               </div>
               <p className="text-gray-400">
-                Building stronger communities through local resource sharing.
+                Building stronger communities through resource sharing.
               </p>
             </div>
+            
             <div>
-              <h4 className="font-semibold mb-4">Platform</h4>
+              <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">How it Works</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Safety</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Community Guidelines</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Trust & Reviews</a></li>
               </ul>
             </div>
+            
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
+              <h3 className="font-semibold mb-4">Community</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Guidelines</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Success Stories</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Local Events</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Report Issue</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Cookie Policy</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 LREN. All rights reserved. Built with ❤️ for communities.</p>
+          
+          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 LREN. All rights reserved.</p>
           </div>
         </div>
       </footer>
